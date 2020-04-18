@@ -2,7 +2,9 @@
 ]]
 local automanas = true
 local again = 0
+--po wcisnieciu tego hota skrypt zacznie manasowac
 local hotkey_start = 'F1'
+--a ten wylacza skrypt
 local hotkey_end = 'F2'
 
 g_keyboard.bindKeyPress(hotkey_start, function() start() end)
