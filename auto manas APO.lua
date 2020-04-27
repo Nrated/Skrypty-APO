@@ -1,37 +1,34 @@
 --[[ Nubski skrypt napisany przez Ero Senina : {
 ]]
-local automanas = true
-local again = 0
---po wcisnieciu tego hota skrypt zacznie manasowac
-local hotkey_start = 'F1'
---a ten wylacza skrypt
-local hotkey_end = 'F2'
-
-g_keyboard.bindKeyPress(hotkey_start, function() start() end)
-g_keyboard.bindKeyPress(hotkey_end, function() stop() end)
-
+automanas = true
+nextManas = 0
+hotkey_manas = "F1"
+g_keyboard.bindKeyPress(hotkey_manas, function() toggleAutoManas() end)
 
 function manasuj()
-	if g_game.isOnline() then
+	print(automanas)
+	if g_game.isOnline() and automanas then
 		local delay = ( math.random ( 900, 1000))
 		local mana = g_game.getLocalPlayer():getMana()
 		local maxmana = g_game.getLocalPlayer():getMaxMana()
-		if (mana < ((maxmana / 100) * 95))  and automanas then
+		if (mana < ((maxmana / 100) * 95)) then
 			local checkItem = g_game.findPlayerItem(2874, -1)
 			if checkItem then
 				g_game.talk('!mm')
 			end
 		end
-		again = scheduleEvent(manasuj, delay)
-	else
-		removeEvent(manasuj)
+		if automanas then
+			nextManas = scheduleEvent(manasuj, delay)
+		end
 	end
 end
 
-function stop()
-	automanas = false
+function toggleAutoManas()
+	if automanas then
+		automanas = false
+	else
+		automanas = true
+		manasuj()
+	end
 end
-function start()
-	automanas = true
-	manasuj()
-end
+manasuj()
